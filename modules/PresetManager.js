@@ -3,7 +3,7 @@
  * 负责智能预设切换、预设发现、缓存等功能
  */
 
-import { delay, isMobileDevice, safeJsonParse, safeJsonStringify } from './utils.js';
+import { delay, isMobileDevice, safeJsonParse, safeJsonStringify, getSlashCommandExecutor, executeSlashCommand } from './utils.js';
 
 export class PresetManager {
   constructor(extensionName) {
@@ -249,44 +249,22 @@ export class PresetManager {
   }
 
   /**
-   * 执行Slash命令的统一接口
-   */
-  async executeSlashCommand(command) {
-    try {
-      // 首先尝试直接调用全局函数
-      if (typeof window.executeSlashCommands === 'function') {
-        return await window.executeSlashCommands(command);
-      }
-      
-      // 备用方案：尝试通过SillyTavern对象
-      if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
-        return await window.SillyTavern.executeSlashCommands(command);
-      }
-      
-      // 最后尝试通过全局executeSlashCommands
-      if (typeof executeSlashCommands !== 'undefined') {
-        return await executeSlashCommands(command);
-      }
-      
-      throw new Error('executeSlashCommands函数不可用');
-    } catch (error) {
-      console.error(`[预设管理] 执行Slash命令失败 (${command}):`, error);
-      throw error;
-    }
-  }
-
-  /**
    * 获取当前预设
    */
   async getCurrentPreset() {
     try {
-      const result = await this.executeSlashCommand('/preset');
+      if (!getSlashCommandExecutor()) {
+        console.log('[预设管理] Slash命令执行器暂时不可用，返回空预设');
+        return '';
+      }
+
+      const result = await executeSlashCommand('/preset');
       
       const presetName = result?.trim();
-      console.log(`[预设管理] 当前预设: ${presetName || '未知'}`);
+      console.log(`[预设管理] 当前预设: ${presetName || '未设置'}`);
       return presetName || '';
     } catch (error) {
-      console.warn('[预设管理] 获取当前预设失败:', error);
+      console.log('[预设管理] 获取当前预设失败，返回空预设:', error.message);
       return '';
     }
   }
@@ -311,7 +289,12 @@ export class PresetManager {
       }
 
       // 执行预设切换
-      await this.executeSlashCommand(`/preset "${presetName}"`);
+      if (!getSlashCommandExecutor()) {
+        console.log(`[预设管理] Slash命令执行器不可用，无法切换预设: ${presetName}`);
+        return false;
+      }
+
+      await executeSlashCommand(`/preset "${presetName}"`);
 
       // 移动端需要额外的等待时间
       if (isMobileDevice()) {

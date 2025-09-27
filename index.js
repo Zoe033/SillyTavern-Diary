@@ -22,7 +22,7 @@ import { PresetManager } from "./modules/PresetManager.js";
 import { DiaryParser } from "./modules/DiaryParser.js";
 import { DiaryUI } from "./modules/DiaryUI.js";
 import { showCustomCharacterDialog } from "./modules/CustomCharacterDialog.js";
-import { getCurrentCharacterName, isMobileDevice } from "./modules/utils.js";
+import { getCurrentCharacterName, isMobileDevice, getSlashCommandExecutor, executeSlashCommand } from "./modules/utils.js";
 
 // 插件常量
 const extensionName = "diary";
@@ -37,33 +37,6 @@ let diaryUI = null;
 // 插件状态
 let isInitialized = false;
 let currentListeningState = 'stopped'; // 'stopped', 'listening', 'processing'
-
-/**
- * 执行Slash命令的统一接口
- */
-async function executeSlashCommand(command) {
-    try {
-        // 首先尝试直接调用全局函数
-        if (typeof window.executeSlashCommands === 'function') {
-            return await window.executeSlashCommands(command);
-        }
-        
-        // 备用方案：尝试通过SillyTavern对象
-        if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
-            return await window.SillyTavern.executeSlashCommands(command);
-        }
-        
-        // 最后尝试通过全局executeSlashCommands
-        if (typeof executeSlashCommands !== 'undefined') {
-            return await executeSlashCommands(command);
-        }
-        
-        throw new Error('executeSlashCommands函数不可用');
-    } catch (error) {
-        console.error(`[日记本] 执行Slash命令失败 (${command}):`, error);
-        throw error;
-    }
-}
 
 /**
  * 获取插件设置
@@ -431,7 +404,11 @@ async function handleWriteDiaryClick() {
 ［日记时间：${new Date().toLocaleString('zh-CN')}］
 ［日记内容：详细记录今天的经历、感受和想法］`;
         
-        // 使用统一的slash命令发送消息
+        // 使用正确的slash命令发送消息
+        if (!getSlashCommandExecutor()) {
+            throw new Error('无法发送消息：Slash命令执行器不可用，请稍后再试');
+        }
+
         await executeSlashCommand(`/send ${diaryPrompt}`);
         
         // 移动端给出额外提示
@@ -762,7 +739,7 @@ jQuery(async () => {
                 console.error('[日记本] 延迟初始化失败:', error);
                 // 不显示错误提示，避免影响用户体验
             }
-        }, 3000); // 延迟3秒初始化，给SillyTavern更多时间加载
+        }, 5000); // 延迟5秒初始化，确保SillyTavern完全加载
         
     } catch (error) {
         console.error('[日记本] 插件加载失败:', error);

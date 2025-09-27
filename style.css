@@ -395,25 +395,37 @@
 }
 
 /* ===========================================
-   滚动条样式优化
+   滚动条样式优化（兼容动态样式系统）
    =========================================== */
 
-.diary-extension-settings *::-webkit-scrollbar {
+.diary-extension-settings .text_pole::-webkit-scrollbar,
+.diary-extension-settings .diary-preset-config ::-webkit-scrollbar,
+.diary-extension-settings .diary-status-section ::-webkit-scrollbar,
+.diary-extension-settings .diary-advanced-settings ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.diary-extension-settings *::-webkit-scrollbar-track {
+.diary-extension-settings .text_pole::-webkit-scrollbar-track,
+.diary-extension-settings .diary-preset-config ::-webkit-scrollbar-track,
+.diary-extension-settings .diary-status-section ::-webkit-scrollbar-track,
+.diary-extension-settings .diary-advanced-settings ::-webkit-scrollbar-track {
   background: #f1f3f4;
   border-radius: 4px;
 }
 
-.diary-extension-settings *::-webkit-scrollbar-thumb {
+.diary-extension-settings .text_pole::-webkit-scrollbar-thumb,
+.diary-extension-settings .diary-preset-config ::-webkit-scrollbar-thumb,
+.diary-extension-settings .diary-status-section ::-webkit-scrollbar-thumb,
+.diary-extension-settings .diary-advanced-settings ::-webkit-scrollbar-thumb {
   background: #c1c8cd;
   border-radius: 4px;
 }
 
-.diary-extension-settings *::-webkit-scrollbar-thumb:hover {
+.diary-extension-settings .text_pole::-webkit-scrollbar-thumb:hover,
+.diary-extension-settings .diary-preset-config ::-webkit-scrollbar-thumb:hover,
+.diary-extension-settings .diary-status-section ::-webkit-scrollbar-thumb:hover,
+.diary-extension-settings .diary-advanced-settings ::-webkit-scrollbar-thumb:hover {
   background: #a8b2ba;
 }
 
