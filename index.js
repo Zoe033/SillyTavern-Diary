@@ -236,39 +236,83 @@ async function updateDiaryCount() {
  * 初始化核心模块
  */
 async function initializeModules() {
+    const initErrors = [];
+    
     try {
         const settings = getExtensionSettings();
         const worldbookName = settings.worldbookName || '日记本';
         
-        // 初始化存储模块
-        diaryStorage = new DiaryStorage(worldbookName);
-        console.log('[日记本] 存储模块已初始化');
+        // 安全地初始化每个模块
+        try {
+            diaryStorage = new DiaryStorage(worldbookName);
+            console.log('[日记本] 存储模块已初始化');
+        } catch (error) {
+            initErrors.push('存储模块初始化失败');
+            console.error('[日记本] 存储模块初始化失败:', error);
+        }
         
-        // 初始化预设管理器
-        presetManager = new PresetManager(extensionName);
-        console.log('[日记本] 预设管理器已初始化');
+        try {
+            presetManager = new PresetManager(extensionName);
+            console.log('[日记本] 预设管理器已初始化');
+        } catch (error) {
+            initErrors.push('预设管理器初始化失败');
+            console.error('[日记本] 预设管理器初始化失败:', error);
+        }
         
-        // 初始化解析器
-        diaryParser = new DiaryParser(diaryStorage, presetManager);
-        console.log('[日记本] 消息解析器已初始化');
+        try {
+            diaryParser = new DiaryParser(diaryStorage, presetManager);
+            console.log('[日记本] 消息解析器已初始化');
+        } catch (error) {
+            initErrors.push('消息解析器初始化失败');
+            console.error('[日记本] 消息解析器初始化失败:', error);
+        }
         
-        // 初始化UI管理器
-        diaryUI = new DiaryUI(diaryStorage, presetManager);
-        console.log('[日记本] UI管理器已初始化');
+        try {
+            diaryUI = new DiaryUI(diaryStorage, presetManager);
+            console.log('[日记本] UI管理器已初始化');
+        } catch (error) {
+            initErrors.push('UI管理器初始化失败');
+            console.error('[日记本] UI管理器初始化失败:', error);
+        }
         
-        // 确保世界书存在
-        await diaryStorage.ensureWorldbook();
+        // 尝试确保世界书存在（不阻塞初始化）
+        try {
+            if (diaryStorage) {
+                await diaryStorage.ensureWorldbook();
+            }
+        } catch (error) {
+            console.warn('[日记本] 世界书初始化警告:', error.message);
+            // 不添加到错误列表，因为这不应该阻止插件运行
+        }
         
-        isInitialized = true;
-        console.log('[日记本] 所有模块初始化完成');
+        // 如果核心模块都初始化成功，标记为已初始化
+        if (diaryStorage && presetManager && diaryParser && diaryUI) {
+            isInitialized = true;
+            console.log('[日记本] 所有核心模块初始化完成');
+        } else {
+            isInitialized = false;
+            console.warn('[日记本] 部分模块初始化失败，插件功能可能受限');
+        }
         
-        // 更新界面
-        updateStatusDisplay();
+        // 更新界面（即使部分模块失败也要更新）
+        try {
+            updateStatusDisplay();
+        } catch (error) {
+            console.warn('[日记本] 更新状态显示失败:', error);
+        }
+        
+        // 显示初始化结果
+        if (initErrors.length === 0) {
+            console.log('[日记本] 插件初始化完全成功');
+        } else {
+            console.warn(`[日记本] 插件初始化完成，但有 ${initErrors.length} 个警告:`, initErrors);
+            toastr.warning(`插件初始化完成，但部分功能可能受限`, '日记本插件');
+        }
         
     } catch (error) {
-        console.error('[日记本] 模块初始化失败:', error);
-        toastr.error(`模块初始化失败: ${error.message}`, '初始化错误');
+        console.error('[日记本] 模块初始化严重错误:', error);
         isInitialized = false;
+        // 不显示错误提示，避免影响用户体验
     }
 }
 
@@ -360,10 +404,16 @@ async function handleWriteDiaryClick() {
 ［日记时间：${new Date().toLocaleString('zh-CN')}］
 ［日记内容：详细记录今天的经历、感受和想法］`;
         
-        // 使用SillyTavern的消息发送功能
-        await window.SillyTavern.executeSlashCommandsWithOptions(`/send ${diaryPrompt}`, {
-            abortController: new AbortController()
-        });
+        // 使用正确的slash命令发送消息
+        const executeCmd = typeof executeSlashCommands !== 'undefined' 
+            ? executeSlashCommands 
+            : window.executeSlashCommands;
+
+        if (!executeCmd) {
+            throw new Error('无法发送消息：Slash命令执行器不可用');
+        }
+
+        await executeCmd(`/send ${diaryPrompt}`);
         
         // 移动端给出额外提示
         if (isMobileDevice()) {
@@ -670,19 +720,30 @@ jQuery(async () => {
         // 延迟初始化核心模块（等待SillyTavern完全加载）
         setTimeout(async () => {
             try {
+                console.log('[日记本] 开始延迟初始化...');
                 await initializeModules();
                 
-                // 初始化完成后更新预设列表
-                if (presetManager) {
-                    await updatePresetSelect(getExtensionSettings().selectedPreset);
+                // 安全地初始化完成后更新预设列表
+                try {
+                    if (presetManager) {
+                        await updatePresetSelect(getExtensionSettings().selectedPreset);
+                    }
+                } catch (error) {
+                    console.warn('[日记本] 更新预设列表失败:', error);
                 }
                 
-                toastr.success('日记本插件初始化完成', '初始化成功');
+                // 根据初始化结果显示不同提示
+                if (isInitialized) {
+                    toastr.success('日记本插件加载完成', '初始化成功');
+                } else {
+                    console.warn('[日记本] 插件部分功能不可用');
+                }
+                
             } catch (error) {
                 console.error('[日记本] 延迟初始化失败:', error);
-                toastr.error('插件初始化失败，部分功能可能无法正常使用', '初始化错误');
+                // 不显示错误提示，避免影响用户体验
             }
-        }, 2000); // 延迟2秒初始化
+        }, 3000); // 延迟3秒初始化，给SillyTavern更多时间加载
         
     } catch (error) {
         console.error('[日记本] 插件加载失败:', error);
