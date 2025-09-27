@@ -1,0 +1,13 @@
+{
+    "display_name": "日记本",
+    "loading_order": 10,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "styles/main.css",
+    "author": "AI Assistant",
+    "version": "1.0.0",
+    "description": "智能日记管理系统，支持AI辅助写作、预设切换、角色分类管理等功能",
+    "homePage": "",
+    "buildTime": "2025-09-27T07:27:07.429Z"
+}

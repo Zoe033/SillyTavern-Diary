@@ -1,0 +1,380 @@
+/**
+ * 日记本插件设置面板样式
+ * 包含设置项、状态显示、快捷操作等界面样式
+ */
+
+// ========== 设置面板根容器 ==========
+.diary-plugin-settings {
+  .inline-drawer-content {
+    padding: $diary-spacing-lg;
+    background: linear-gradient(135deg, $diary-bg-light 0%, white 100%);
+    border-radius: $diary-radius-lg;
+    margin: $diary-spacing-sm 0;
+  }
+  
+  .inline-drawer-header {
+    background: linear-gradient(135deg, $diary-primary-light 0%, $diary-primary 100%);
+    color: white;
+    border-radius: $diary-radius-md;
+    padding: $diary-spacing-md $diary-spacing-lg;
+    
+    b {
+      font-weight: 600;
+      font-size: $diary-font-lg;
+    }
+  }
+}
+
+// ========== 设置区域分组 ==========
+.diary-settings-section {
+  margin-bottom: $diary-spacing-xl;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  h4 {
+    color: $diary-text-primary;
+    font-size: $diary-font-lg;
+    font-weight: 600;
+    margin-bottom: $diary-spacing-lg;
+    padding-bottom: $diary-spacing-sm;
+    border-bottom: 2px solid $diary-border-light;
+    
+    &::before {
+      content: '⚙️';
+      margin-right: $diary-spacing-sm;
+    }
+  }
+}
+
+// ========== 设置项样式 ==========
+.diary-setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: $diary-spacing-sm;
+  margin-bottom: $diary-spacing-lg;
+  padding: $diary-spacing-md;
+  background: white;
+  border: $diary-border-thin solid $diary-border-light;
+  border-radius: $diary-radius-md;
+  transition: all $diary-duration-normal $diary-ease-out;
+  
+  &:hover {
+    border-color: $diary-primary-light;
+    box-shadow: $diary-shadow-light;
+  }
+  
+  // 复选框设置项
+  &:has(input[type="checkbox"]) {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: $diary-spacing-md;
+    
+    input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    
+    label {
+      flex-grow: 1;
+      margin-bottom: $diary-spacing-xs;
+    }
+  }
+  
+  // 文本输入框设置项
+  &:has(input[type="text"]) {
+    label {
+      font-weight: 500;
+      color: $diary-text-primary;
+      margin-bottom: $diary-spacing-xs;
+    }
+    
+    input[type="text"] {
+      @include diary-input-base;
+      margin-bottom: $diary-spacing-xs;
+    }
+  }
+  
+  // 选择框设置项
+  &:has(select) {
+    label {
+      font-weight: 500;
+      color: $diary-text-primary;
+      margin-bottom: $diary-spacing-xs;
+    }
+    
+    select {
+      @include diary-input-base;
+      margin-bottom: $diary-spacing-xs;
+    }
+  }
+}
+
+// ========== 设置项提示文本 ==========
+.diary-setting-hint {
+  font-size: $diary-font-xs;
+  color: $diary-text-muted;
+  line-height: 1.4;
+  font-style: italic;
+  
+  &::before {
+    content: '💡 ';
+  }
+}
+
+// ========== 状态信息区域 ==========
+.diary-status-info {
+  background: linear-gradient(135deg, lighten($diary-info, 45%) 0%, lighten($diary-info, 50%) 100%);
+  border: $diary-border-thin solid lighten($diary-info, 20%);
+  border-radius: $diary-radius-md;
+  padding: $diary-spacing-lg;
+  
+  .diary-status-item {
+    @include diary-flex(row, center, space-between);
+    margin-bottom: $diary-spacing-sm;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .diary-status-label {
+      font-weight: 500;
+      color: $diary-text-primary;
+      
+      &::after {
+        content: '';
+        margin-left: $diary-spacing-xs;
+      }
+    }
+    
+    .diary-status-value {
+      font-weight: 600;
+      padding: $diary-spacing-xs $diary-spacing-sm;
+      border-radius: $diary-radius-sm;
+      font-size: $diary-font-xs;
+      
+      // 状态颜色
+      &.status-success {
+        background: $diary-success;
+        color: white;
+      }
+      
+      &.status-warning {
+        background: $diary-warning;
+        color: white;
+      }
+      
+      &.status-error {
+        background: $diary-error;
+        color: white;
+      }
+      
+      &.status-info {
+        background: $diary-info;
+        color: white;
+      }
+      
+      &.status-unknown {
+        background: $diary-text-muted;
+        color: white;
+      }
+    }
+  }
+}
+
+// ========== 快捷操作按钮组 ==========
+.diary-quick-actions {
+  @include diary-flex(row, center, flex-start);
+  gap: $diary-spacing-sm;
+  flex-wrap: wrap;
+  
+  @include diary-mobile {
+    justify-content: center;
+  }
+  
+  .menu_button {
+    @include diary-button-base;
+    background: linear-gradient(135deg, $diary-primary-light 0%, $diary-primary 100%);
+    color: white;
+    border: $diary-border-thin solid $diary-border-medium;
+    font-size: $diary-font-xs;
+    padding: $diary-spacing-sm $diary-spacing-md;
+    
+    i {
+      margin-right: $diary-spacing-xs;
+      font-size: $diary-font-xs;
+    }
+    
+    &:hover {
+      background: linear-gradient(135deg, $diary-primary 0%, $diary-primary-dark 100%);
+      transform: translateY(-1px);
+      box-shadow: $diary-shadow-medium;
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: $diary-shadow-light;
+    }
+    
+    // 特定按钮颜色
+    &:has(i.fa-book) {
+      background: linear-gradient(135deg, lighten($diary-info, 10%) 0%, $diary-info 100%);
+      border-color: $diary-info;
+      
+      &:hover {
+        background: linear-gradient(135deg, $diary-info 0%, darken($diary-info, 10%) 100%);
+      }
+    }
+    
+    &:has(i.fa-download) {
+      background: linear-gradient(135deg, lighten($diary-success, 10%) 0%, $diary-success 100%);
+      border-color: $diary-success;
+      
+      &:hover {
+        background: linear-gradient(135deg, $diary-success 0%, darken($diary-success, 10%) 100%);
+      }
+    }
+    
+    &:has(i.fa-search) {
+      background: linear-gradient(135deg, lighten($diary-warning, 10%) 0%, $diary-warning 100%);
+      border-color: $diary-warning;
+      
+      &:hover {
+        background: linear-gradient(135deg, $diary-warning 0%, darken($diary-warning, 10%) 100%);
+      }
+    }
+  }
+}
+
+// ========== 自定义复选框样式 ==========
+input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid $diary-border-medium;
+  border-radius: $diary-radius-sm;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  transition: all $diary-duration-normal $diary-ease-out;
+  
+  &:checked {
+    background: $diary-primary;
+    border-color: $diary-primary;
+    
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+  
+  &:hover {
+    border-color: $diary-primary-light;
+    box-shadow: 0 0 0 2px rgba($diary-primary, 0.2);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($diary-primary, 0.3);
+  }
+}
+
+// ========== 自定义选择框样式 ==========
+select.text_pole {
+  @include diary-input-base;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666'%3E%3Cpath d='M6 9L2 5h8l-4 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $diary-spacing-sm center;
+  background-size: 12px;
+  padding-right: $diary-spacing-xl;
+  
+  &:focus {
+    border-color: $diary-primary;
+  }
+}
+
+// ========== 文本输入框增强 ==========
+input[type="text"].text_pole {
+  @include diary-input-base;
+  
+  &:focus {
+    border-color: $diary-primary;
+    box-shadow: 0 0 0 2px rgba($diary-primary, 0.2);
+  }
+  
+  &[readonly] {
+    background: $diary-bg-light;
+    cursor: not-allowed;
+  }
+}
+
+// ========== 响应式优化 ==========
+@include diary-mobile {
+  .diary-plugin-settings {
+    .inline-drawer-content {
+      padding: $diary-spacing-md;
+    }
+    
+    .diary-setting-item {
+      padding: $diary-spacing-sm;
+      
+      &:has(input[type="checkbox"]) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    
+    .diary-quick-actions {
+      flex-direction: column;
+      
+      .menu_button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+// ========== 加载状态 ==========
+.diary-settings-loading {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border: 3px solid $diary-border-light;
+    border-top: 3px solid $diary-primary;
+    border-radius: 50%;
+    animation: diary-spin 1s linear infinite;
+    z-index: 10;
+  }
+}
+
+// ========== 错误状态 ==========
+.diary-setting-error {
+  border-color: $diary-error !important;
+  background: lighten($diary-error, 45%) !important;
+  
+  .diary-setting-hint {
+    color: $diary-error;
+    font-weight: 500;
+    
+    &::before {
+      content: '⚠️ ';
+    }
+  }
+}
