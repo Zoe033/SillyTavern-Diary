@@ -249,6 +249,33 @@ export function getLatestAIMessage() {
 }
 
 /**
+ * 执行Slash命令的统一接口
+ */
+async function executeSlashCommand(command) {
+  try {
+    // 首先尝试直接调用全局函数
+    if (typeof window.executeSlashCommands === 'function') {
+      return await window.executeSlashCommands(command);
+    }
+    
+    // 备用方案：尝试通过SillyTavern对象
+    if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
+      return await window.SillyTavern.executeSlashCommands(command);
+    }
+    
+    // 最后尝试通过全局executeSlashCommands
+    if (typeof executeSlashCommands !== 'undefined') {
+      return await executeSlashCommands(command);
+    }
+    
+    throw new Error('executeSlashCommands函数不可用');
+  } catch (error) {
+    console.error(`[日记本工具] 执行Slash命令失败 (${command}):`, error);
+    throw error;
+  }
+}
+
+/**
  * 删除最新的两条消息（日记命令楼层+日记内容楼层）
  */
 export async function deleteLatestTwoMessages() {
@@ -261,17 +288,7 @@ export async function deleteLatestTwoMessages() {
 
     console.log(`[日记本] 准备删除最新的两条消息，当前消息总数: ${messages.length}`);
     
-    // 使用正确的slash命令执行方式
-    const executeCmd = typeof executeSlashCommands !== 'undefined' 
-      ? executeSlashCommands 
-      : window.executeSlashCommands;
-
-    if (!executeCmd) {
-      console.warn('[日记本] Slash命令执行器不可用，跳过删除消息');
-      return false;
-    }
-
-    await executeCmd('/del 2');
+    await executeSlashCommand('/del 2');
     
     console.log('[日记本] 已成功删除最新的两条消息');
     return true;

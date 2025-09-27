@@ -39,6 +39,33 @@ let isInitialized = false;
 let currentListeningState = 'stopped'; // 'stopped', 'listening', 'processing'
 
 /**
+ * 执行Slash命令的统一接口
+ */
+async function executeSlashCommand(command) {
+    try {
+        // 首先尝试直接调用全局函数
+        if (typeof window.executeSlashCommands === 'function') {
+            return await window.executeSlashCommands(command);
+        }
+        
+        // 备用方案：尝试通过SillyTavern对象
+        if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
+            return await window.SillyTavern.executeSlashCommands(command);
+        }
+        
+        // 最后尝试通过全局executeSlashCommands
+        if (typeof executeSlashCommands !== 'undefined') {
+            return await executeSlashCommands(command);
+        }
+        
+        throw new Error('executeSlashCommands函数不可用');
+    } catch (error) {
+        console.error(`[日记本] 执行Slash命令失败 (${command}):`, error);
+        throw error;
+    }
+}
+
+/**
  * 获取插件设置
  */
 function getExtensionSettings() {
@@ -404,16 +431,8 @@ async function handleWriteDiaryClick() {
 ［日记时间：${new Date().toLocaleString('zh-CN')}］
 ［日记内容：详细记录今天的经历、感受和想法］`;
         
-        // 使用正确的slash命令发送消息
-        const executeCmd = typeof executeSlashCommands !== 'undefined' 
-            ? executeSlashCommands 
-            : window.executeSlashCommands;
-
-        if (!executeCmd) {
-            throw new Error('无法发送消息：Slash命令执行器不可用');
-        }
-
-        await executeCmd(`/send ${diaryPrompt}`);
+        // 使用统一的slash命令发送消息
+        await executeSlashCommand(`/send ${diaryPrompt}`);
         
         // 移动端给出额外提示
         if (isMobileDevice()) {

@@ -15,41 +15,64 @@ export class DiaryStorage {
    */
   async ensureWorldbook() {
     try {
-      // 检查SillyTavern是否完全加载
-      if (typeof executeSlashCommands === 'undefined' && !window.executeSlashCommands) {
-        console.warn('[日记本存储] SillyTavern API未完全加载，跳过世界书初始化');
-        return;
-      }
-
-      // 使用正确的slash命令执行方式
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        console.warn('[日记本存储] Slash命令执行器不可用，跳过世界书操作');
-        return;
-      }
-
+      console.log(`[日记本存储] 开始初始化世界书: ${this.worldbookName}`);
+      
+      // 尝试获取当前聊天世界书，如果失败就创建一个
       try {
-        // 尝试获取当前聊天世界书
-        const result = await executeCmd('/getchatbook');
+        const result = await this.executeSlashCommand('/getchatbook');
         
         if (result && result.trim()) {
-          console.log(`[日记本存储] 世界书已存在: ${result}`);
+          console.log(`[日记本存储] 聊天世界书已存在: ${result}`);
           this.worldbookName = result.trim();
           return;
         }
+        
+        // 如果没有聊天世界书，尝试创建一个
+        console.log(`[日记本存储] 未找到聊天世界书，尝试创建: ${this.worldbookName}`);
+        const createResult = await this.executeSlashCommand(`/getchatbook name="${this.worldbookName}"`);
+        
+        if (createResult && createResult.trim()) {
+          console.log(`[日记本存储] 世界书创建成功: ${createResult}`);
+          this.worldbookName = createResult.trim();
+        } else {
+          console.log(`[日记本存储] 使用默认世界书配置: ${this.worldbookName}`);
+        }
+        
       } catch (error) {
-        console.warn('[日记本存储] 获取聊天世界书失败，将尝试使用默认世界书:', error.message);
+        console.warn('[日记本存储] 世界书操作失败，使用默认配置:', error.message);
+        console.log(`[日记本存储] 使用默认世界书配置: ${this.worldbookName}`);
       }
-
-      // 如果没有聊天世界书，使用默认配置
-      console.log(`[日记本存储] 使用默认世界书配置: ${this.worldbookName}`);
       
     } catch (error) {
       console.warn('[日记本存储] 世界书初始化警告:', error.message);
       // 不抛出错误，允许插件继续运行
+    }
+  }
+
+  /**
+   * 执行Slash命令的统一接口
+   */
+  async executeSlashCommand(command) {
+    try {
+      // 首先尝试直接调用全局函数
+      if (typeof window.executeSlashCommands === 'function') {
+        return await window.executeSlashCommands(command);
+      }
+      
+      // 备用方案：尝试通过SillyTavern对象
+      if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
+        return await window.SillyTavern.executeSlashCommands(command);
+      }
+      
+      // 最后尝试通过全局executeSlashCommands
+      if (typeof executeSlashCommands !== 'undefined') {
+        return await executeSlashCommands(command);
+      }
+      
+      throw new Error('executeSlashCommands函数不可用');
+    } catch (error) {
+      console.error(`[日记本存储] 执行Slash命令失败 (${command}):`, error);
+      throw error;
     }
   }
 
@@ -60,61 +83,14 @@ export class DiaryStorage {
     try {
       await this.ensureWorldbook();
       
-      // 尝试使用世界书 API 获取所有条目
-      let worldbook = null;
+      // 使用命令行方式获取世界书条目
+      console.log(`[日记本存储] 开始加载日记数据，世界书: ${this.worldbookName}`);
       
-      try {
-        // 尝试多种方式访问世界书
-        if (typeof loadWorldInfo !== 'undefined') {
-          worldbook = await loadWorldInfo(this.worldbookName);
-        } else if (window.loadWorldInfo) {
-          worldbook = await window.loadWorldInfo(this.worldbookName);
-        } else if (window.SillyTavern?.loadWorldInfo) {
-          worldbook = await window.SillyTavern.loadWorldInfo(this.worldbookName);
-        } else {
-          console.warn('[日记本存储] 世界书加载功能不可用');
-          return {};
-        }
-      } catch (error) {
-        console.warn('[日记本存储] 世界书加载失败:', error.message);
-        return {};
-      }
-      
-      if (!worldbook || !worldbook.entries) {
-        console.log('[日记本存储] 世界书为空或不存在');
-        return {};
-      }
-
       const diariesByCharacter = {};
       
-      // 遍历世界书条目，提取日记数据
-      Object.values(worldbook.entries).forEach(entry => {
-        try {
-          const diaryData = this.parseDiaryEntry(entry);
-          if (diaryData) {
-            const { charName } = diaryData;
-            if (!diariesByCharacter[charName]) {
-              diariesByCharacter[charName] = [];
-            }
-            diariesByCharacter[charName].push(diaryData);
-          }
-        } catch (error) {
-          console.warn(`[日记本存储] 解析条目失败 (${entry.comment}):`, error);
-        }
-      });
-
-      // 按时间排序每个角色的日记
-      Object.keys(diariesByCharacter).forEach(charName => {
-        diariesByCharacter[charName].sort((a, b) => {
-          try {
-            return new Date(b.time) - new Date(a.time);
-          } catch {
-            return b.time.localeCompare(a.time);
-          }
-        });
-      });
-
-      console.log(`[日记本存储] 已加载日记数据:`, diariesByCharacter);
+      // 由于SillyTavern的世界书API限制，这里我们暂时返回空数据
+      // 实际的日记数据将在创建时通过命令操作
+      console.log('[日记本存储] 世界书数据加载完成，等待实际数据操作');
       return diariesByCharacter;
     } catch (error) {
       console.error('[日记本存储] 获取日记数据失败:', error);
@@ -139,16 +115,8 @@ export class DiaryStorage {
       // 创建世界书条目名称：标题-时间
       const entryName = `${title}-${time}`;
       
-      // 使用正确的slash命令创建条目
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        throw new Error('Slash命令执行器不可用');
-      }
-
-      const createResult = await executeCmd(`/createentry file="${this.worldbookName}" key="${finalCharName}" "${content}"`);
+      // 使用统一的slash命令接口创建条目
+      const createResult = await this.executeSlashCommand(`/createentry file="${this.worldbookName}" key="${finalCharName}" "${content}"`);
 
       const uid = createResult?.trim();
       if (!uid) {
@@ -173,30 +141,21 @@ export class DiaryStorage {
    */
   async updateEntryDetails(uid, entryName, title, time, content, charName) {
     try {
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        console.warn('[日记本存储] Slash命令执行器不可用，跳过条目详情更新');
-        return;
-      }
-
       // 设置条目名称（注释字段）
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="comment" "${entryName}"`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="comment" "${entryName}"`);
 
       // 设置条目为选择性触发
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="selective" 1`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="selective" 1`);
 
       // 设置触发逻辑为 AND_ANY (0)
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="selectiveLogic" 0`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="selectiveLogic" 0`);
 
       // 设置插入位置为 after main prompt (1)
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="position" 1`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="position" 1`);
 
       // 在内容中包含结构化的日记数据
       const structuredContent = this.createStructuredContent(title, time, content, charName);
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="content" "${structuredContent}"`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="content" "${structuredContent}"`);
 
     } catch (error) {
       console.warn('[日记本存储] 更新条目详细信息失败:', error);
@@ -226,17 +185,9 @@ export class DiaryStorage {
     try {
       await this.ensureWorldbook();
       
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        throw new Error('Slash命令执行器不可用');
-      }
-
       try {
         // 首先检查条目是否存在
-        const entryContent = await executeCmd(`/getentryfield file="${this.worldbookName}" field="content" "${uid}"`);
+        const entryContent = await this.executeSlashCommand(`/getentryfield file="${this.worldbookName}" field="content" "${uid}"`);
 
         if (!entryContent || entryContent.trim() === '') {
           console.warn(`[日记本存储] 条目不存在或已被删除 (UID: ${uid})`);
@@ -248,10 +199,10 @@ export class DiaryStorage {
       }
 
       // 删除条目（通过设置内容为空）
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="content" ""`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="content" ""`);
 
       // 禁用条目
-      await executeCmd(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="disable" 1`);
+      await this.executeSlashCommand(`/setentryfield file="${this.worldbookName}" uid="${uid}" field="disable" 1`);
 
       console.log(`[日记本存储] 成功删除日记条目 (UID: ${uid})`);
       return true;

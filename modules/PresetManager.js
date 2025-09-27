@@ -249,20 +249,38 @@ export class PresetManager {
   }
 
   /**
+   * 执行Slash命令的统一接口
+   */
+  async executeSlashCommand(command) {
+    try {
+      // 首先尝试直接调用全局函数
+      if (typeof window.executeSlashCommands === 'function') {
+        return await window.executeSlashCommands(command);
+      }
+      
+      // 备用方案：尝试通过SillyTavern对象
+      if (window.SillyTavern && typeof window.SillyTavern.executeSlashCommands === 'function') {
+        return await window.SillyTavern.executeSlashCommands(command);
+      }
+      
+      // 最后尝试通过全局executeSlashCommands
+      if (typeof executeSlashCommands !== 'undefined') {
+        return await executeSlashCommands(command);
+      }
+      
+      throw new Error('executeSlashCommands函数不可用');
+    } catch (error) {
+      console.error(`[预设管理] 执行Slash命令失败 (${command}):`, error);
+      throw error;
+    }
+  }
+
+  /**
    * 获取当前预设
    */
   async getCurrentPreset() {
     try {
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        console.warn('[预设管理] Slash命令执行器不可用');
-        return '';
-      }
-
-      const result = await executeCmd('/preset');
+      const result = await this.executeSlashCommand('/preset');
       
       const presetName = result?.trim();
       console.log(`[预设管理] 当前预设: ${presetName || '未知'}`);
@@ -293,16 +311,7 @@ export class PresetManager {
       }
 
       // 执行预设切换
-      const executeCmd = typeof executeSlashCommands !== 'undefined' 
-        ? executeSlashCommands 
-        : window.executeSlashCommands;
-
-      if (!executeCmd) {
-        console.warn('[预设管理] Slash命令执行器不可用');
-        return false;
-      }
-
-      await executeCmd(`/preset "${presetName}"`);
+      await this.executeSlashCommand(`/preset "${presetName}"`);
 
       // 移动端需要额外的等待时间
       if (isMobileDevice()) {
