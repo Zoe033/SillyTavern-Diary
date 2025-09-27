@@ -1,0 +1,549 @@
+/**
+ * 日记本插件移动端响应式样式
+ * 专门针对移动设备的优化和适配
+ */
+
+// ========== 移动端全局优化 ==========
+@include diary-mobile {
+  
+  // 移动端触摸优化
+  .diary-plugin-container {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  // 移动端字体调整
+  body .diary-plugin-container {
+    font-size: $diary-font-sm;
+    line-height: 1.5;
+  }
+  
+  // 移动端弹窗全屏优化
+  .diary-popup-overlay {
+    padding: $diary-spacing-sm;
+    
+    // 增强移动端背景效果
+    background: 
+      radial-gradient(circle at 25% 25%, rgba($diary-primary-light, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 75% 75%, rgba($diary-primary, 0.08) 0%, transparent 40%),
+      linear-gradient(135deg, rgba(black, 0.7) 0%, rgba(black, 0.8) 100%);
+    backdrop-filter: blur(12px);
+  }
+  
+  .diary-popup-content {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    
+    // 移动端特殊情况：小屏幕设备保持一些圆角
+    @media (min-height: 600px) {
+      height: calc(100vh - #{$diary-spacing-lg});
+      max-height: calc(100vh - #{$diary-spacing-lg});
+      border-radius: $diary-radius-lg;
+      margin: $diary-spacing-sm;
+    }
+  }
+  
+  // 移动端头部优化
+  .diary-header {
+    padding: $diary-spacing-md $diary-spacing-lg;
+    
+    .diary-title {
+      font-size: $diary-font-xl;
+    }
+    
+    .diary-close-btn {
+      width: 32px;
+      height: 32px;
+      font-size: $diary-font-lg;
+    }
+  }
+  
+  // 移动端内容区域优化
+  .diary-content {
+    // 确保内容区域可滚动
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    // 移动端滚动条样式
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba($diary-primary, 0.3);
+      border-radius: 2px;
+    }
+  }
+}
+
+// ========== 移动端封面页面优化 ==========
+@include diary-mobile {
+  .diary-cover {
+    padding: $diary-spacing-xl $diary-spacing-lg;
+    
+    .diary-cover-icon {
+      font-size: 3rem;
+      margin-bottom: $diary-spacing-lg;
+    }
+    
+    .diary-cover-title {
+      font-size: $diary-font-xl;
+      margin-bottom: $diary-spacing-lg;
+    }
+    
+    .diary-cover-stats {
+      grid-template-columns: 1fr 1fr;
+      gap: $diary-spacing-md;
+      margin-top: $diary-spacing-lg;
+      
+      .diary-stat-item {
+        padding: $diary-spacing-md;
+        
+        .diary-stat-number {
+          font-size: $diary-font-xl;
+          margin-bottom: $diary-spacing-xs;
+        }
+        
+        .diary-stat-label {
+          font-size: $diary-font-xs;
+        }
+      }
+    }
+  }
+}
+
+// ========== 移动端角色列表优化 ==========
+@include diary-mobile {
+  .diary-character-list {
+    padding: $diary-spacing-md;
+    
+    .diary-character-grid {
+      grid-template-columns: 1fr;
+      gap: $diary-spacing-md;
+    }
+    
+    .diary-character-card {
+      padding: $diary-spacing-md;
+      
+      .diary-character-name {
+        font-size: $diary-font-base;
+        margin-bottom: $diary-spacing-xs;
+      }
+      
+      .diary-character-count {
+        font-size: $diary-font-xs;
+      }
+      
+      .diary-character-preview {
+        margin-top: $diary-spacing-sm;
+        padding-top: $diary-spacing-sm;
+        font-size: $diary-font-xs;
+      }
+    }
+  }
+}
+
+// ========== 移动端日记列表优化 ==========
+@include diary-mobile {
+  .diary-entries {
+    padding: $diary-spacing-md;
+    
+    .diary-entries-header {
+      flex-direction: column;
+      gap: $diary-spacing-md;
+      align-items: stretch;
+      margin-bottom: $diary-spacing-md;
+      
+      .diary-character-name {
+        font-size: $diary-font-lg;
+        text-align: center;
+      }
+      
+      .diary-back-btn {
+        align-self: center;
+        min-width: 120px;
+      }
+    }
+    
+    .diary-entries-grid {
+      grid-template-columns: 1fr;
+      gap: $diary-spacing-md;
+    }
+    
+    .diary-entry-card {
+      padding: $diary-spacing-md;
+      
+      // 移动端调整删除按钮位置和大小
+      .diary-entry-actions {
+        position: static;
+        opacity: 1;
+        margin-top: $diary-spacing-sm;
+        padding-top: $diary-spacing-sm;
+        border-top: $diary-border-thin solid $diary-border-light;
+        @include diary-flex(row, center, flex-end);
+        
+        .diary-delete-btn {
+          width: 28px;
+          height: 28px;
+          font-size: $diary-font-sm;
+          position: relative;
+          
+          // 移动端确认删除提示
+          &::before {
+            content: '删除';
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            padding: $diary-spacing-xs;
+            background: rgba($diary-error, 0.9);
+            color: white;
+            font-size: $diary-font-xs;
+            border-radius: $diary-radius-sm;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity $diary-duration-normal;
+            margin-bottom: $diary-spacing-xs;
+          }
+          
+          &:active::before {
+            opacity: 1;
+          }
+        }
+      }
+      
+      .diary-entry-title {
+        font-size: $diary-font-base;
+        margin-bottom: $diary-spacing-xs;
+      }
+      
+      .diary-entry-time {
+        font-size: $diary-font-xs;
+        margin-bottom: $diary-spacing-sm;
+      }
+      
+      .diary-entry-preview {
+        font-size: $diary-font-xs;
+        @include diary-text-clamp(2);
+      }
+    }
+  }
+}
+
+// ========== 移动端日记详情优化 ==========
+@include diary-mobile {
+  .diary-detail {
+    padding: $diary-spacing-md;
+    
+    .diary-detail-header {
+      flex-direction: column;
+      gap: $diary-spacing-lg;
+      margin-bottom: $diary-spacing-lg;
+      
+      .diary-detail-info {
+        text-align: center;
+        
+        .diary-detail-title {
+          font-size: $diary-font-xl;
+          margin-bottom: $diary-spacing-sm;
+        }
+        
+        .diary-detail-time {
+          font-size: $diary-font-base;
+        }
+      }
+      
+      .diary-detail-actions {
+        flex-direction: row;
+        gap: $diary-spacing-md;
+        align-self: stretch;
+        
+        .diary-back-btn,
+        .diary-delete-btn {
+          flex: 1;
+          text-align: center;
+          justify-content: center;
+        }
+      }
+    }
+    
+    .diary-detail-content {
+      padding: $diary-spacing-lg;
+      font-size: $diary-font-sm;
+      line-height: 1.6;
+      border-radius: $diary-radius-md;
+    }
+  }
+}
+
+// ========== 移动端分页优化 ==========
+@include diary-mobile {
+  .diary-pagination {
+    padding: $diary-spacing-md;
+    
+    .diary-pagination-info {
+      font-size: $diary-font-xs;
+      margin-bottom: $diary-spacing-sm;
+    }
+    
+    .diary-pagination-controls {
+      gap: $diary-spacing-xs;
+      flex-wrap: wrap;
+      justify-content: center;
+      
+      .diary-page-btn {
+        min-width: 32px;
+        height: 32px;
+        font-size: $diary-font-xs;
+        
+        // 移动端触摸优化
+        &:active {
+          background: $diary-primary !important;
+          color: white !important;
+          transform: scale(0.95);
+        }
+      }
+      
+      // 移动端简化分页显示
+      .diary-page-ellipsis {
+        display: none;
+      }
+    }
+  }
+}
+
+// ========== 移动端角色选择弹窗优化 ==========
+@include diary-mobile {
+  .diary-char-overlay {
+    padding: $diary-spacing-lg;
+  }
+  
+  .diary-char-content {
+    width: 100%;
+    max-width: none;
+    min-width: unset;
+    border-radius: $diary-radius-lg;
+  }
+  
+  .diary-char-dialog-content {
+    padding: $diary-spacing-lg;
+  }
+  
+  .diary-char-hint {
+    font-size: $diary-font-xs;
+    padding: $diary-spacing-sm;
+    margin-bottom: $diary-spacing-lg;
+  }
+  
+  .diary-char-input-section {
+    margin-bottom: $diary-spacing-lg;
+    
+    .diary-char-input {
+      padding: $diary-spacing-md;
+      font-size: $diary-font-sm;
+      
+      // 移动端输入框焦点优化
+      &:focus {
+        // 防止iOS Safari缩放
+        font-size: 16px;
+      }
+    }
+  }
+  
+  .diary-char-buttons {
+    flex-direction: column;
+    gap: $diary-spacing-md;
+    
+    .diary-char-btn {
+      width: 100%;
+      padding: $diary-spacing-md;
+      font-size: $diary-font-base;
+      
+      // 移动端按钮触摸反馈
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+}
+
+// ========== 移动端空状态优化 ==========
+@include diary-mobile {
+  .diary-empty-state {
+    padding: $diary-spacing-xl $diary-spacing-lg;
+    
+    .diary-empty-icon {
+      font-size: 3rem;
+      margin-bottom: $diary-spacing-lg;
+    }
+    
+    .diary-empty-title {
+      font-size: $diary-font-lg;
+      margin-bottom: $diary-spacing-md;
+    }
+    
+    .diary-empty-description {
+      font-size: $diary-font-sm;
+    }
+  }
+}
+
+// ========== 移动端键盘适配 ==========
+@include diary-mobile {
+  // iOS Safari 键盘弹起时的视窗调整
+  @supports (-webkit-touch-callout: none) {
+    .diary-char-overlay,
+    .diary-popup-overlay {
+      // 使用 dvh 单位适配动态视窗高度（如果浏览器支持）
+      height: 100dvh;
+    }
+  }
+  
+  // 输入框聚焦时的页面调整
+  .diary-char-input:focus,
+  input[type="text"].text_pole:focus {
+    // 确保输入框在键盘弹起时仍然可见
+    scroll-margin-top: 100px;
+  }
+}
+
+// ========== 移动端手势支持 ==========
+@include diary-mobile {
+  .diary-popup-content {
+    // 支持左右滑动手势（如果需要）
+    touch-action: pan-y;
+  }
+  
+  .diary-entry-card,
+  .diary-character-card {
+    // 优化卡片点击反馈
+    &:active {
+      transform: scale(0.98);
+      transition: transform 0.1s ease;
+    }
+  }
+  
+  // 长按菜单禁用（避免误操作）
+  .diary-function-button,
+  .diary-char-btn,
+  .diary-page-btn {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+// ========== 移动端性能优化 ==========
+@include diary-mobile {
+  // 使用硬件加速优化动画性能
+  .diary-popup-content,
+  .diary-char-content {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  // 减少移动端的复杂渐变和阴影
+  .diary-entry-card,
+  .diary-character-card {
+    box-shadow: $diary-shadow-light;
+    
+    &:hover {
+      box-shadow: $diary-shadow-medium;
+    }
+  }
+  
+  // 优化移动端滚动性能
+  .diary-content,
+  .diary-detail-content {
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+}
+
+// ========== 移动端深色模式适配 ==========
+@media (prefers-color-scheme: dark) {
+  @include diary-mobile {
+    .diary-popup-content,
+    .diary-char-content {
+      background: linear-gradient(135deg, darken($diary-bg-dark, 5%) 0%, darken($diary-bg-dark, 10%) 50%, darken($diary-bg-dark, 15%) 100%);
+    }
+    
+    .diary-content,
+    .diary-char-dialog-content {
+      background: darken(white, 5%);
+    }
+  }
+}
+
+// ========== 超小屏幕设备优化（<480px）==========
+@media (max-width: 480px) {
+  .diary-popup-content {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  .diary-header {
+    padding: $diary-spacing-sm $diary-spacing-md;
+    
+    .diary-title {
+      font-size: $diary-font-lg;
+    }
+  }
+  
+  .diary-cover-stats {
+    grid-template-columns: 1fr !important;
+    
+    .diary-stat-item {
+      padding: $diary-spacing-sm !important;
+    }
+  }
+  
+  .diary-char-overlay {
+    padding: 0;
+    
+    .diary-char-content {
+      width: 100%;
+      height: 100vh;
+      border-radius: 0;
+    }
+  }
+}
+
+// ========== 横屏模式优化 ==========
+@media (max-width: 768px) and (orientation: landscape) {
+  .diary-popup-content {
+    max-height: 100vh;
+    height: 100vh;
+  }
+  
+  .diary-cover {
+    padding: $diary-spacing-lg;
+    
+    .diary-cover-icon {
+      font-size: 2.5rem;
+      margin-bottom: $diary-spacing-md;
+    }
+    
+    .diary-cover-stats {
+      margin-top: $diary-spacing-md;
+    }
+  }
+  
+  .diary-char-content {
+    max-height: 100vh;
+    
+    .diary-char-dialog-content {
+      padding: $diary-spacing-md;
+    }
+  }
+}
