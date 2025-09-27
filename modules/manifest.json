@@ -1,0 +1,12 @@
+{
+  "display_name": "日记本 - Diary",
+  "loading_order": 10,
+  "requires": [],
+  "optional": [],
+  "js": "index.js",
+  "css": "style.css",
+  "author": "SillyTavern Community",
+  "version": "2.3.0",
+  "homePage": "https://github.com/SillyTavern/SillyTavern-Diary",
+  "description": "一个功能完整的日记系统，支持自动记录、智能预设切换、精美界面等功能"
+}

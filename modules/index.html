@@ -1,0 +1,76 @@
+<!-- 日记本插件主界面 -->
+<div class="diary-extension-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>📖 日记本 Diary</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+            <!-- 主要功能按钮区域 -->
+            <div class="diary-main-buttons flex-container">
+                <input id="diary_book_btn" class="menu_button diary-button" type="submit" value="📚 打开日记本" />
+                <input id="diary_write_btn" class="menu_button diary-button" type="submit" value="✏️ 写日记" />
+                <input id="diary_record_btn" class="menu_button diary-button" type="submit" value="📝 记录" />
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 预设配置区域 -->
+            <div class="diary-preset-config">
+                <h4>预设配置</h4>
+                <div class="diary-preset-row flex-container">
+                    <label for="diary_preset_select" class="diary-label">日记预设:</label>
+                    <select id="diary_preset_select" class="text_pole">
+                        <option value="">请选择预设...</option>
+                    </select>
+                    <input id="diary_refresh_presets" class="menu_button small_button" type="submit" value="🔄 刷新" />
+                </div>
+                <div class="diary-preset-info">
+                    <small id="diary_preset_status" class="text-muted"></small>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 状态显示区域 -->
+            <div class="diary-status-section">
+                <h4>状态信息</h4>
+                <div class="diary-status-item flex-container">
+                    <label class="diary-label">监听状态:</label>
+                    <span id="diary_listening_status" class="diary-status-badge">未启动</span>
+                </div>
+                <div class="diary-status-item flex-container">
+                    <label class="diary-label">日记总数:</label>
+                    <span id="diary_total_count" class="diary-count-badge">0</span>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 高级设置区域 -->
+            <div class="diary-advanced-settings">
+                <h4>高级设置</h4>
+                <div class="diary-setting-row flex-container">
+                    <input id="diary_auto_delete" type="checkbox" />
+                    <label for="diary_auto_delete">保存成功后自动删除聊天记录</label>
+                </div>
+                <div class="diary-setting-row flex-container">
+                    <input id="diary_mobile_optimized" type="checkbox" />
+                    <label for="diary_mobile_optimized">移动端优化模式</label>
+                </div>
+                <div class="diary-setting-row flex-container">
+                    <label for="diary_worldbook_name" class="diary-label">世界书名称:</label>
+                    <input id="diary_worldbook_name" type="text" class="text_pole" value="日记本" placeholder="日记数据存储的世界书名称"/>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 操作按钮区域 -->
+            <div class="diary-action-buttons flex-container">
+                <input id="diary_export_btn" class="menu_button" type="submit" value="📤 导出日记" />
+                <input id="diary_clear_btn" class="menu_button warning-button" type="submit" value="🗑️ 清空数据" />
+            </div>
+        </div>
+    </div>
+</div>
