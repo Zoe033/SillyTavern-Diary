@@ -625,15 +625,16 @@
 /* 移动端适配 */
 @media (max-width: 768px) {
     .diary-book-dialog {
-        align-items: flex-start !important;
+        padding: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 20px 10px !important;
     }
     
     .diary-book-content {
         width: 95%;
-        max-height: none !important;
+        max-height: 90vh;
         margin: auto !important;
     }
     
@@ -1475,15 +1476,17 @@
 /* 移动端适配 */
 @media (max-width: 768px) {
     .diary-preset-dialog {
-        align-items: flex-start !important;
+        padding: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 20px 10px !important;
     }
     
     .diary-preset-content {
         width: 95%;
-        max-height: none !important;
+        max-width: calc(100% - 40px) !important;
+        max-height: 85vh;
         margin: auto !important;
     }
     
@@ -1532,35 +1535,17 @@
     
     /* 自定义角色弹窗移动端 */
     .diary-custom-character-dialog {
-        align-items: flex-start !important;
+        padding: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 20px 10px !important;
     }
     
     .diary-custom-character-content {
         width: 95% !important;
-        max-width: 100% !important;
-        max-height: none !important;
+        max-width: calc(100% - 40px) !important;
+        max-height: 85vh !important;
         margin: auto !important;
-    }
-    
-    .diary-custom-character-header {
-        padding: 16px 20px 12px !important;
-    }
-    
-    .diary-custom-character-body {
-        padding: 16px 20px !important;
-    }
-    
-    .diary-custom-character-footer {
-        padding: 12px 20px 16px !important;
-        flex-direction: column !important;
-        gap: 10px !important;
-    }
-    
-    .diary-character-btn {
-        width: 100% !important;
-        padding: 10px 16px !important;
     }
 }
