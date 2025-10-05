@@ -3031,6 +3031,7 @@ box-shadow:
 
 .diary-book-character-name {
   font-size: 18px !important;
+  margin-top: 6px !important;
   margin-bottom: 8px !important;
 }
 
@@ -3056,7 +3057,7 @@ box-shadow:
 
 /* 角色列表标题和装饰调整 */
 .diary-book-character-list .diary-book-view-title {
-  font-size: 20px !important;
+  font-size: 24px !important;
   margin-bottom: 15px !important;
 }
 
