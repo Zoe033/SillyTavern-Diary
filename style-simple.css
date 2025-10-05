@@ -355,6 +355,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .diary-custom-character-content {
@@ -365,6 +367,7 @@
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
+    margin: auto;
 }
 
 .diary-custom-character-header {
@@ -474,6 +477,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .diary-book-content {
@@ -486,6 +491,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    margin: auto;
 }
 
 .diary-book-header {
@@ -624,18 +630,9 @@
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .diary-book-dialog {
-        padding: 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow-y: auto !important;
-    }
-    
     .diary-book-content {
         width: 95%;
-        max-height: 90vh;
-        margin: auto !important;
+        max-height: 95vh;
     }
     
     .diary-book-cover-title {
@@ -1214,6 +1211,8 @@
     align-items: center;
     justify-content: center;
     z-index: 9999;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* 预设弹窗内容容器 */
@@ -1227,6 +1226,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin: auto;
 }
 
 /* 预设弹窗标题栏 */
@@ -1475,19 +1475,9 @@
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .diary-preset-dialog {
-        padding: 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow-y: auto !important;
-    }
-    
     .diary-preset-content {
         width: 95%;
-        max-width: calc(100% - 40px) !important;
-        max-height: 85vh;
-        margin: auto !important;
+        max-height: 90vh;
     }
     
     .diary-preset-header {
@@ -1531,21 +1521,5 @@
     
     .diary-preset-item-name {
         font-size: 15px;
-    }
-    
-    /* 自定义角色弹窗移动端 */
-    .diary-custom-character-dialog {
-        padding: 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow-y: auto !important;
-    }
-    
-    .diary-custom-character-content {
-        width: 95% !important;
-        max-width: calc(100% - 40px) !important;
-        max-height: 85vh !important;
-        margin: auto !important;
     }
 }

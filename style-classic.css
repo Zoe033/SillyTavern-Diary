@@ -490,6 +490,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .diary-custom-character-content {
@@ -500,6 +502,7 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  margin: auto;
 }
 
 .diary-custom-character-header {
@@ -610,11 +613,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .diary-book-content {
   display: flex;
   flex-direction: column;
+  margin: auto;
 }
 
 .diary-book-header {
@@ -727,6 +733,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .diary-preset-content {
@@ -739,6 +747,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin: auto;
 }
 
 .diary-preset-header {
@@ -2894,11 +2903,6 @@ box-shadow:
   -webkit-backdrop-filter: blur(15px);
   height: 100vh;
   height: 100dvh;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 20px !important;
-  overflow-y: auto !important;
 }
 
 @supports not (backdrop-filter: blur(15px)) {
@@ -2913,9 +2917,8 @@ box-shadow:
 
 .diary-book-content {
   width: 95% !important;
-  min-width: 300px !important;
+  min-width: 340px !important;
   max-width: 450px !important;
-  margin: auto !important;
   transform: perspective(800px) rotateX(1deg) !important;
   box-shadow: 
     0 30px 120px rgba(0, 0, 0, 0.6),
@@ -3009,21 +3012,16 @@ box-shadow:
 .diary-preset-dialog {
   height: 100vh;
   height: 100dvh;
-  padding: 20px !important;
+  padding: 15px !important;
   background-color: rgba(0, 0, 0, 0.8) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow-y: auto !important;
 }
 
 .diary-preset-content {
   min-width: 300px !important;
   max-width: 95vw !important;
-  width: calc(100% - 40px) !important;
+  width: 100% !important;
   max-height: 85vh;
   max-height: 85dvh;
-  margin: auto !important;
   border-radius: 12px !important;
 }
 
@@ -3043,17 +3041,11 @@ box-shadow:
 /* 自定义角色弹窗移动端 */
 .diary-custom-character-dialog {
   padding: 15px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow-y: auto !important;
 }
 
 .diary-custom-character-content {
   max-width: 100% !important;
-  min-width: auto !important;
-  width: calc(100% - 30px) !important;
-  margin: auto !important;
+  padding: 25px 20px !important;
 }
 
 .diary-custom-character-content::after {
