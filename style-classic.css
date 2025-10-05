@@ -3031,12 +3031,13 @@ box-shadow:
 
 .diary-book-character-name {
   font-size: 18px !important;
-  margin-top: 6px !important;
   margin-bottom: 8px !important;
+  margin-top: 6px !important;
 }
 
 .diary-book-character-count {
   font-size: 13px !important;
+  margin-top: 4px !important;
 }
 
 /* 返回按钮位置调整 */
@@ -3059,6 +3060,8 @@ box-shadow:
 .diary-book-character-list .diary-book-view-title {
   font-size: 24px !important;
   margin-bottom: 15px !important;
+  line-height: 1.4 !important;
+  padding-top: 5px !important;
 }
 
 .diary-book-character-list .diary-book-nav-header::before {
