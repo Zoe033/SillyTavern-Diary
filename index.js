@@ -745,7 +745,8 @@ let floatWindow = {
     isDragging: false,
     dragOffset: { x: 0, y: 0 },
     startPos: { x: 0, y: 0 },
-    hasMoved: false
+    hasMoved: false,
+    lastClickTime: 0  // 防止重复触发
 };
 
 // 初始化悬浮窗（将HTML移动到body）
@@ -770,16 +771,31 @@ function bindFloatWindowEvents() {
     const $window = $('#diary-float-window');
     
     // 主按钮点击事件 - 展开/收起菜单
-    $mainBtn.on('click', function(e) {
+    // 同时监听 click 和 touchend 事件，确保移动端也能响应
+    $mainBtn.on('click touchend', function(e) {
+        // 如果是 touchend 并且正在拖拽，不处理
+        if (e.type === 'touchend' && floatWindow.isDragging) {
+            return;
+        }
+        
+        // 防止短时间内重复触发（移动端 touchend 和 click 可能都触发）
+        const now = Date.now();
+        if (now - floatWindow.lastClickTime < 300) {
+            console.log('🚫 防止重复触发');
+            return;
+        }
+        floatWindow.lastClickTime = now;
+        
         e.preventDefault();
         e.stopPropagation();
         
         // 如果刚刚发生了拖拽，不触发菜单切换
         if (floatWindow.hasMoved) {
-            floatWindow.hasMoved = false;
+            console.log('🚫 检测到拖拽，取消菜单切换');
             return;
         }
         
+        console.log('👆 点击悬浮窗，切换菜单状态');
         toggleFloatMenu();
     });
     
@@ -827,7 +843,10 @@ function bindFloatWindowEvents() {
             y: clientY
         };
         
-        e.preventDefault();
+        // 只在桌面端阻止默认行为，移动端需要等待确认是否真的拖拽
+        if (e.type === 'mousedown') {
+            e.preventDefault();
+        }
     });
     
     // 全局鼠标移动事件
@@ -837,14 +856,20 @@ function bindFloatWindowEvents() {
         const clientX = e.originalEvent.clientX || e.originalEvent.touches[0].clientX;
         const clientY = e.originalEvent.clientY || e.originalEvent.touches[0].clientY;
         
-        // 检查是否移动了足够距离（超过5px认为是拖拽）
+        // 检查是否移动了足够距离
+        // 移动端需要更大的阈值（15px），桌面端5px
+        const moveThreshold = e.type === 'touchmove' ? 15 : 5;
         const moveDistance = Math.sqrt(
             Math.pow(clientX - floatWindow.startPos.x, 2) + 
             Math.pow(clientY - floatWindow.startPos.y, 2)
         );
         
-        if (moveDistance > 5) {
+        if (moveDistance > moveThreshold) {
             floatWindow.hasMoved = true;
+            // 移动端在确认拖拽后才阻止默认行为
+            if (e.type === 'touchmove') {
+                e.preventDefault();
+            }
         }
         
         let newX = clientX - floatWindow.dragOffset.x;
@@ -875,6 +900,16 @@ function bindFloatWindowEvents() {
             // 只有在真正移动了的情况下才保存位置
             if (floatWindow.hasMoved) {
                 saveFloatWindowPosition();
+                
+                // 移动端：延迟重置 hasMoved 标志，避免立即触发点击
+                if (e.type === 'touchend') {
+                    setTimeout(() => {
+                        floatWindow.hasMoved = false;
+                    }, 300);
+                }
+            } else {
+                // 没有移动，立即重置标志，允许点击事件触发
+                floatWindow.hasMoved = false;
             }
         }
     });
