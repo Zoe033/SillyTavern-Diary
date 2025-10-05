@@ -1,0 +1,307 @@
+<!-- 日记本插件设置界面 -->
+<div class="diary-plugin-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>📖 日记本</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+            <!-- 基本设置区域 -->
+            <div class="diary-settings-section">
+                <h4>📋 基本设置</h4>
+                
+                <div class="diary-setting-item flex-container">
+                    <span class="diary-info-label">世界书名称: <strong>日记本</strong> </span>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 主题美化区域 -->
+            <div class="diary-theme-section">
+                <h4>🎨 主题美化</h4>
+                
+                <div class="diary-setting-item flex-container">
+                    <label for="diary_theme_select">当前主题:</label>
+                    <select id="diary_theme_select" class="text_pole">
+                        <!-- 主题选项将由JS动态生成 -->
+                    </select>
+                </div>
+                
+                <div class="diary-setting-item flex-container">
+                    <span id="diary_theme_description" class="diary-status-text">主题说明</span>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 预设管理区域 -->
+            <div class="diary-presets-section">
+                <h4>⚙️ 预设管理</h4>
+                
+                <div class="diary-setting-item flex-container">
+                    <span id="diary_selected_preset" class="diary-status-text">未选择预设</span>
+                </div>
+                
+                <div class="diary-setting-item flex-container">
+                    <input id="diary_configure_presets" class="menu_button" type="button" value="配置预设" />
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 悬浮窗控制区域 -->
+            <div class="diary-float-control-section">
+                <h4>🎯 悬浮窗控制</h4>
+                
+                <div class="diary-setting-item flex-container">
+                    <input id="diary_toggle_float_window" class="menu_button" type="button" value="显示/隐藏悬浮窗" />
+                </div>
+                
+                <div class="diary-setting-item flex-container">
+                    <input id="diary_reset_float_position" class="menu_button" type="button" value="重置悬浮窗位置" />
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+
+            <!-- 状态信息区域 -->
+            <div class="diary-status-section">
+                <h4>📊 状态信息</h4>
+                
+                <div class="diary-setting-item flex-container">
+                    <input id="diary_show_status" class="menu_button" type="button" value="显示插件状态" />
+                </div>
+                
+                <div class="diary-info-text">
+                    <p><small>
+                        <strong>使用说明:</strong><br>
+                        • 聊天页面会出现可拖拽的圆形悬浮窗<br>
+                        • 点击悬浮窗展开三个功能按钮<br>
+                        • 📖 日记本: 浏览和管理现有日记<br>
+                        • ✏️ 写日记: 开始完整的日记写作流程<br>
+                        • 📝 记录: 手动解析最新AI回复中的日记内容<br>
+                        • 点击外部区域可收起悬浮菜单
+                    </small></p>
+                </div>
+            </div>
+
+            <hr class="sysHR" />
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 以下是插件使用的弹窗和悬浮窗HTML结构 -->
+<!-- 这些元素会被JS移动到body中使用 -->
+<!-- ============================================ -->
+
+<!-- 悬浮窗 -->
+<div id="diary-float-window" class="diary-float-window" style="display: none;">
+    <div class="diary-float-main-btn" id="diary-float-main-btn">
+        <span class="diary-float-icon">📖</span>
+    </div>
+    <div class="diary-float-menu" id="diary-float-menu" style="display: none;">
+        <div class="diary-float-sub-btn diary-float-book-btn" id="diary-float-book-btn" title="日记本">
+            <span>📖</span>
+        </div>
+        <div class="diary-float-sub-btn diary-float-write-btn" id="diary-float-write-btn" title="写日记">
+            <span>✏️</span>
+        </div>
+        <div class="diary-float-sub-btn diary-float-record-btn" id="diary-float-record-btn" title="记录">
+            <span>📝</span>
+        </div>
+    </div>
+</div>
+
+<!-- 自定义角色选择弹窗 -->
+<div id="diary-custom-character-dialog" class="diary-custom-character-dialog" style="display: none;">
+    <div class="diary-custom-character-content">
+        <div class="diary-custom-character-header">
+            <h3>选择写日记角色</h3>
+            <button id="diary-character-close-btn" class="diary-character-close">&times;</button>
+        </div>
+        <div class="diary-custom-character-body">
+            <p>可以填写写日记角色的名字，不填写将使用角色卡名称</p>
+            <input type="text" id="diary-character-input" class="diary-character-input" placeholder="">
+        </div>
+        <div class="diary-custom-character-footer">
+            <button id="diary-character-send-btn" class="diary-character-btn diary-character-send">发送</button>
+            <button id="diary-character-cancel-btn" class="diary-character-btn diary-character-cancel">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 预设列表弹窗 -->
+<div id="diary-preset-dialog" class="diary-preset-dialog" style="display: none;">
+    <div class="diary-preset-content">
+        <!-- 预设弹窗标题栏 -->
+        <div class="diary-preset-header">
+            <h2 class="diary-preset-title">预设管理</h2>
+            <button id="diary-preset-close-btn" class="diary-preset-close">&times;</button>
+        </div>
+        
+        <!-- 预设弹窗主体 -->
+        <div class="diary-preset-body">
+            <!-- 系统当前预设显示 -->
+            <div class="diary-preset-info-box diary-preset-system">
+                <div class="diary-preset-info-label">系统当前预设</div>
+                <div id="diary-preset-system-name" class="diary-preset-info-value">未选择预设</div>
+            </div>
+            
+            <!-- 日记选中预设显示 -->
+            <div class="diary-preset-info-box diary-preset-selected-box">
+                <div class="diary-preset-info-label">日记专用预设</div>
+                <div id="diary-preset-selected-name" class="diary-preset-info-value">未设置（将使用系统预设）</div>
+                <div class="diary-preset-info-hint">点击预设卡片进行选择，再次点击可取消</div>
+            </div>
+            
+            <!-- 分隔线 -->
+            <hr class="diary-preset-divider" />
+            
+            <!-- 预设列表容器 -->
+            <div class="diary-preset-list-container">
+                <h3 class="diary-preset-list-title">所有预设</h3>
+                
+                <div id="diary-preset-grid" class="diary-preset-list">
+                    <!-- 预设卡片将在这里动态生成 -->
+                </div>
+                
+                <!-- 空状态 -->
+                <div id="diary-preset-empty" class="diary-preset-empty-state" style="display: none;">
+                    <div class="diary-preset-empty-icon">📄</div>
+                    <div class="diary-preset-empty-text">暂无预设</div>
+                    <div class="diary-preset-empty-hint">请先配置文本生成预设</div>
+                </div>
+            </div>
+            
+            <!-- 分页控制 -->
+            <div id="diary-preset-pagination" class="diary-preset-pagination">
+                <button id="diary-preset-prev-page" class="diary-preset-page-btn">上一页</button>
+                <div id="diary-preset-page-info" class="diary-preset-page-info">第 1 页，共 1 页</div>
+                <button id="diary-preset-next-page" class="diary-preset-page-btn">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 日记本弹窗 -->
+<div id="diary-book-dialog" class="diary-book-dialog" style="display: none;">
+    <div class="diary-book-content">
+        <!-- 日记本标题栏 -->
+        <div class="diary-book-header">
+            <h2 class="diary-book-title">私人日记</h2>
+            <button id="diary-book-close-btn" class="diary-book-close">&times;</button>
+        </div>
+        
+        <!-- 日记本主体内容 -->
+        <div class="diary-book-body">
+            <!-- 封面视图 -->
+            <div id="diary-book-cover-view" class="diary-book-view diary-book-cover">
+                <div class="diary-book-cover-content">
+                    <div class="diary-book-cover-title">我的日记本</div>
+                    <div class="diary-book-cover-subtitle">
+                        共收录<span id="diary-book-total-count">0</span>篇日记 · <span id="diary-book-character-count">0</span>位作者
+                    </div>
+                    <button id="diary-book-enter-btn" class="diary-book-cover-button">打开目录</button>
+                </div>
+            </div>
+            
+            <!-- 角色列表视图 -->
+            <div id="diary-book-character-list-view" class="diary-book-view diary-book-character-list">
+                <div class="diary-book-nav-header">
+                    <button id="diary-book-back-to-cover" class="diary-book-nav-btn">← 返回</button>
+                    <h3 class="diary-book-view-title">作者目录</h3>
+                    <div class="diary-book-nav-spacer"></div>
+                </div>
+                
+                <div class="diary-book-character-content">
+                    <div id="diary-book-character-grid" class="diary-book-character-grid">
+                        <!-- 角色卡片将在这里动态生成 -->
+                    </div>
+                    
+                    <!-- 空状态 -->
+                    <div id="diary-book-character-empty" class="diary-book-empty-state" style="display: none;">
+                        <div class="diary-book-empty-icon">📚</div>
+                        <div class="diary-book-empty-text">暂无日记</div>
+                        <div class="diary-book-empty-hint">开始写日记来创建你的第一篇作品吧！</div>
+                    </div>
+                </div>
+                
+                <!-- 分页控制 -->
+                <div id="diary-book-character-pagination" class="diary-book-pagination">
+                    <button id="diary-book-prev-page" class="diary-book-page-btn">上一页</button>
+                    <div id="diary-book-page-info" class="diary-book-page-info">第 1 页，共 1 页</div>
+                    <button id="diary-book-next-page" class="diary-book-page-btn">下一页</button>
+                </div>
+            </div>
+            
+            <!-- 日记列表视图 -->
+            <div id="diary-book-diary-list-view" class="diary-book-view diary-book-diary-list">
+                <div class="diary-book-nav-header">
+                    <button id="diary-book-back-to-character-list" class="diary-book-nav-btn">← 返回</button>
+                    <h3 id="diary-book-character-name" class="diary-book-view-title">角色日记</h3>
+                    <div class="diary-book-nav-spacer"></div>
+                </div>
+                
+                <div class="diary-book-diary-content">
+                    <div id="diary-book-diary-grid" class="diary-book-diary-grid">
+                        <!-- 日记卡片将在这里动态生成 -->
+                    </div>
+                    
+                    <!-- 空状态 -->
+                    <div id="diary-book-diary-empty" class="diary-book-empty-state" style="display: none;">
+                        <div class="diary-book-empty-icon">📝</div>
+                        <div class="diary-book-empty-text">该角色暂无日记</div>
+                        <div class="diary-book-empty-hint">开始写日记来记录美好时光吧！</div>
+                    </div>
+                </div>
+                
+                <!-- 分页控制 -->
+                <div id="diary-book-diary-pagination" class="diary-book-pagination">
+                    <button id="diary-book-diary-prev-page" class="diary-book-page-btn">上一页</button>
+                    <div id="diary-book-diary-page-info" class="diary-book-page-info">第 1 页，共 1 页</div>
+                    <button id="diary-book-diary-next-page" class="diary-book-page-btn">下一页</button>
+                </div>
+            </div>
+            
+            <!-- 日记详情视图 -->
+            <div id="diary-book-detail-view" class="diary-book-view diary-book-detail">
+                <div class="diary-book-nav-header">
+                    <button id="diary-book-back-to-diary-list" class="diary-book-nav-btn">← 返回</button>
+                    <h3 class="diary-book-view-title">日记详情</h3>
+                    <div class="diary-book-nav-spacer"></div>
+                </div>
+                
+                <div class="diary-book-detail-content">
+                    <div class="diary-book-detail-page">
+                        <!-- 日记标题 -->
+                        <div id="diary-book-detail-title" class="diary-book-detail-title">
+                            日记标题
+                        </div>
+                        
+                        <!-- 装饰性分隔线 -->
+                        <div class="diary-book-detail-divider">
+                            <span class="diary-book-detail-ornament">✦</span>
+                        </div>
+                        
+                        <!-- 日记时间 -->
+                        <div id="diary-book-detail-time" class="diary-book-detail-time">
+                            日记时间
+                        </div>
+                        
+                        <!-- 日记内容 -->
+                        <div id="diary-book-detail-text" class="diary-book-detail-text">
+                            日记内容将在这里显示...
+                        </div>
+                        
+                        <!-- 删除按钮 -->
+                        <div class="diary-book-detail-actions">
+                            <button id="diary-book-delete-btn" class="diary-book-delete-btn">删除日记</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
