@@ -3076,14 +3076,17 @@ box-shadow:
 }
 
 .diary-custom-character-footer {
-  flex-direction: column-reverse !important;
-  gap: 10px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  gap: 12px !important;
   padding: 0 20px 24px 30px !important;
   margin: 0 !important;
 }
 
 .diary-character-btn {
-  width: 100% !important;
+  flex: 1 !important;
+  max-width: 150px !important;
   padding: 12px 20px !important;
   font-size: 14px !important;
 }
