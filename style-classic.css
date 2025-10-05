@@ -1006,7 +1006,7 @@ animation: paperRipple 8s ease-in-out infinite;
 }
 
 .diary-book-content:hover {
-transform: perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1.02) !important;
+transform: perspective(1200px) rotateX(0deg) rotateY(0deg) !important;
 animation-play-state: paused;
 }
 
@@ -2921,7 +2921,7 @@ box-shadow:
 }
 
 .diary-book-content:hover {
-  transform: perspective(800px) rotateX(0deg) scale(1.01) !important;
+  transform: perspective(800px) rotateX(0deg) !important;
   box-shadow: 
     0 35px 140px rgba(0, 0, 0, 0.7),
     0 20px 100px rgba(210, 180, 140, 0.5),
