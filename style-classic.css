@@ -3056,23 +3056,35 @@ box-shadow:
   top: calc(50vh - 39vh + 20px) !important;
 }
 
+/* 角色列表导航头部调整 */
+.diary-book-character-list .diary-book-nav-header {
+  align-items: flex-end !important;
+  padding-bottom: 15px !important;
+}
+
 /* 角色列表标题和装饰调整 */
 .diary-book-character-list .diary-book-view-title {
   font-size: 24px !important;
-  margin-bottom: 10px !important;
-  line-height: 1.2 !important;
-  padding-top: 15px !important;
-  padding-bottom: 5px !important;
+  margin-bottom: 0 !important;
+  line-height: 1.4 !important;
+  padding-top: 0 !important;
+  padding-bottom: 8px !important;
 }
 
 .diary-book-character-list .diary-book-nav-header::before {
   left: 12px !important;
   font-size: 18px !important;
+  bottom: 15px !important;
+  top: auto !important;
+  transform: none !important;
 }
 
 .diary-book-character-list .diary-book-nav-header::after {
   right: 12px !important;
   font-size: 18px !important;
+  bottom: 15px !important;
+  top: auto !important;
+  transform: none !important;
 }
 
 .diary-book-diary-title {
