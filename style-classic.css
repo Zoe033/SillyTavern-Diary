@@ -2944,7 +2944,7 @@ box-shadow:
 }
 
 .diary-book-body {
-  padding: 55px 40px !important;
+  padding: 20px 15px !important;
 }
 
 .diary-book-cover {
@@ -2979,7 +2979,7 @@ box-shadow:
 /* 页面容器调整 */
 .diary-book-character-list {
   padding: 15px !important;
-  margin: 8px !important;
+  margin: 0 !important;
   border-width: 2px !important;
   border-radius: 12px !important;
 }
@@ -2994,8 +2994,10 @@ box-shadow:
 
 .diary-book-diary-list,
 .diary-book-detail {
-  padding: 25px !important;
-  margin: 15px !important;
+  padding: 15px !important;
+  margin: 0 !important;
+  border-width: 2px !important;
+  border-radius: 12px !important;
 }
 
 /* 角色卡片移动端优化 */
@@ -3036,10 +3038,20 @@ box-shadow:
   font-size: 13px !important;
 }
 
-/* 角色列表页返回按钮位置调整 */
+/* 返回按钮位置调整 */
 #diary-book-character-list-view .diary-book-nav-btn {
-  left: calc(2.5% + 23px) !important;
-  top: calc(50vh - 39vh + 23px) !important;
+  left: calc(2.5% + 15px) !important;
+  top: calc(50vh - 39vh + 20px) !important;
+}
+
+#diary-book-diary-list-view .diary-book-nav-btn {
+  left: calc(2.5% + 15px) !important;
+  top: calc(50vh - 39vh + 20px) !important;
+}
+
+#diary-book-detail-view .diary-book-nav-btn {
+  left: calc(2.5% + 15px) !important;
+  top: calc(50vh - 39vh + 20px) !important;
 }
 
 /* 角色列表标题和装饰调整 */
@@ -3064,10 +3076,6 @@ box-shadow:
 }
 
 /* 日记详情调整 */
-.diary-book-detail {
-  padding: 35px 25px !important;
-}
-
 .diary-book-detail-title {
   margin-top: 10px !important;
 }
