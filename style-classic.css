@@ -3105,31 +3105,41 @@ box-shadow:
   left: 0 !important;
 }
 
+/* 关键：移除中间层容器的padding */
+.diary-book-detail-content {
+  padding: 0 !important;
+}
+
+.diary-book-detail-page {
+  padding: 8px !important;
+  margin: 0 !important;
+}
+
 .diary-book-detail-title {
   font-size: 22px !important;
-  margin: 0 !important;
-  padding: 0 5px 15px 5px !important;
+  margin: 0 0 12px 0 !important;
+  padding: 0 8px 12px 8px !important;
   border-bottom-width: 2px !important;
 }
 
 .diary-book-detail-title::before {
-  left: 5px !important;
+  left: 8px !important;
   font-size: 16px !important;
 }
 
 .diary-book-detail-title::after {
-  right: 5px !important;
+  right: 8px !important;
   font-size: 16px !important;
 }
 
 .diary-book-detail-time {
   font-size: 14px !important;
-  margin: 12px 0 !important;
-  padding: 0 5px !important;
+  margin: 0 0 12px 0 !important;
+  padding: 0 8px !important;
 }
 
 .diary-book-detail-text {
-  padding: 15px 10px !important;
+  padding: 15px 12px !important;
   border-width: 2px !important;
   border-radius: 8px !important;
   font-size: 15px !important;
@@ -3148,8 +3158,8 @@ box-shadow:
 }
 
 .diary-book-detail-actions {
-  margin: 18px 0 0 0 !important;
-  padding-top: 16px !important;
+  margin: 15px 0 0 0 !important;
+  padding: 15px 0 0 0 !important;
 }
 
 .diary-book-delete-btn {
