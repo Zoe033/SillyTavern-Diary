@@ -1215,7 +1215,7 @@
 
 /* 预设弹窗内容容器 */
 .diary-preset-content {
-    background: var(--SmartThemeBodyColor);
+    background: #f8f9fa;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     width: 90%;
@@ -1325,7 +1325,7 @@
 .diary-preset-list-title {
     font-size: 18px;
     font-weight: bold;
-    color: var(--SmartThemeBodyText);
+    color: #2d3748;
     margin: 0 0 16px 0;
 }
 
@@ -1338,7 +1338,7 @@
 
 /* 预设列表项 */
 .diary-preset-item {
-    background: var(--SmartThemeBorderColor);
+    background: #4a5568;
     border: 2px solid transparent;
     border-radius: 8px;
     padding: 14px 16px;
@@ -1381,7 +1381,7 @@
 .diary-preset-item-name {
     font-size: 16px;
     font-weight: 600;
-    color: var(--SmartThemeBodyText);
+    color: #e2e8f0;
     word-break: break-word;
 }
 
@@ -1421,7 +1421,7 @@
 .diary-preset-empty-text {
     font-size: 18px;
     font-weight: bold;
-    color: var(--SmartThemeBodyText);
+    color: #2d3748;
     margin-bottom: 8px;
 }
 
@@ -1438,13 +1438,13 @@
     gap: 12px;
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid var(--SmartThemeBorderColor);
+    border-top: 1px solid #e2e8f0;
 }
 
 .diary-preset-page-btn {
-    background: var(--SmartThemeBlurTintColor);
-    border: 1px solid var(--SmartThemeBorderColor);
-    color: var(--SmartThemeBodyText);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #2d3748;
     padding: 8px 16px;
     border-radius: 6px;
     font-size: 14px;
@@ -1465,7 +1465,7 @@
 
 .diary-preset-page-info {
     font-size: 14px;
-    color: var(--SmartThemeBodyText);
+    color: #2d3748;
     flex: 1;
     text-align: center;
 }
