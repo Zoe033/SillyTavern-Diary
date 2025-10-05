@@ -490,8 +490,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .diary-custom-character-content {
@@ -502,7 +500,6 @@
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  margin: auto;
 }
 
 .diary-custom-character-header {
@@ -613,14 +610,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .diary-book-content {
   display: flex;
   flex-direction: column;
-  margin: auto;
 }
 
 .diary-book-header {
@@ -733,8 +727,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .diary-preset-content {
@@ -747,7 +739,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin: auto;
 }
 
 .diary-preset-header {
@@ -3039,12 +3030,9 @@ box-shadow:
 }
 
 /* 自定义角色弹窗移动端 */
-.diary-custom-character-dialog {
-  padding: 15px !important;
-}
-
 .diary-custom-character-content {
-  max-width: 100% !important;
+  max-width: 95% !important;
+  min-width: 300px !important;
   padding: 25px 20px !important;
 }
 

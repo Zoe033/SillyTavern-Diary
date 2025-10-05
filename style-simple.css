@@ -355,8 +355,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 .diary-custom-character-content {
@@ -367,7 +365,6 @@
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    margin: auto;
 }
 
 .diary-custom-character-header {
@@ -477,8 +474,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 .diary-book-content {
@@ -491,7 +486,6 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin: auto;
 }
 
 .diary-book-header {
@@ -630,9 +624,15 @@
 
 /* 移动端适配 */
 @media (max-width: 768px) {
+    .diary-book-dialog {
+        height: 100vh;
+        height: 100dvh;
+    }
+    
     .diary-book-content {
         width: 95%;
-        max-height: 95vh;
+        max-height: 85vh;
+        max-height: 85dvh;
     }
     
     .diary-book-cover-title {
@@ -1211,8 +1211,6 @@
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 /* 预设弹窗内容容器 */
@@ -1226,7 +1224,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    margin: auto;
 }
 
 /* 预设弹窗标题栏 */
@@ -1473,11 +1470,25 @@
     text-align: center;
 }
 
-/* 移动端适配 */
+/* 移动端适配 - 预设和自定义角色弹窗 */
 @media (max-width: 768px) {
+    .diary-custom-character-dialog,
+    .diary-preset-dialog {
+        height: 100vh;
+        height: 100dvh;
+    }
+    
+    .diary-custom-character-content {
+        width: 95%;
+        max-width: 450px;
+        max-height: 85vh;
+        max-height: 85dvh;
+    }
+    
     .diary-preset-content {
         width: 95%;
-        max-height: 90vh;
+        max-height: 85vh;
+        max-height: 85dvh;
     }
     
     .diary-preset-header {
