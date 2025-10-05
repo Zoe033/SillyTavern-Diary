@@ -3003,7 +3003,6 @@ box-shadow:
 .diary-preset-dialog {
   height: 100vh;
   height: 100dvh;
-  padding: 15px !important;
   background-color: rgba(0, 0, 0, 0.8) !important;
 }
 
@@ -3030,9 +3029,17 @@ box-shadow:
 }
 
 /* 自定义角色弹窗移动端 */
+.diary-custom-character-dialog {
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
 .diary-custom-character-content {
-  max-width: 95% !important;
-  min-width: 300px !important;
+  width: 95% !important;
+  max-width: 450px !important;
+  min-width: unset !important;
+  max-height: 85vh !important;
+  max-height: 85dvh !important;
   padding: 25px 20px !important;
 }
 
