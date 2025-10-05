@@ -3040,7 +3040,17 @@ box-shadow:
   min-width: unset !important;
   max-height: 85vh !important;
   max-height: 85dvh !important;
-  padding: 25px 20px !important;
+  padding: 0 !important;
+}
+
+.diary-custom-character-header {
+  margin: 0 !important;
+  padding: 22px 20px 12px !important;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+.diary-custom-character-body {
+  padding: 28px 20px 24px 20px !important;
 }
 
 .diary-custom-character-content::after {
@@ -3049,14 +3059,15 @@ box-shadow:
   bottom: 40px;
 }
 
-.diary-custom-character-body p,
-.diary-custom-character-footer {
-  padding-left: 15px !important;
-}
-
 .diary-custom-character-body p {
   font-size: 13px !important;
   margin-bottom: 18px !important;
+  padding-left: 10px !important;
+}
+
+.diary-custom-character-body > div:nth-child(2) {
+  padding-left: 10px !important;
+  margin-bottom: 20px !important;
 }
 
 .diary-character-input {
@@ -3067,12 +3078,20 @@ box-shadow:
 .diary-custom-character-footer {
   flex-direction: column-reverse !important;
   gap: 10px !important;
+  padding: 0 20px 24px 30px !important;
+  margin: 0 !important;
 }
 
 .diary-character-btn {
   width: 100% !important;
   padding: 12px 20px !important;
   font-size: 14px !important;
+}
+
+.diary-character-close {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 24px !important;
 }
 }
 
