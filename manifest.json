@@ -4,8 +4,7 @@
     "requires": [],
     "optional": [],
     "js": "index.js",
-    "css": "style.css",
-    "author": "SillyTavern Community",
-    "version": "1.0.0",
-    "homePage": "https://github.com/SillyTavern/SillyTavern"
+    "author": "Etaf Cisky",
+    "version": "3.0.0",
+    "homePage": "https://github.com/EtafCisky/SillyTavern-Diary"
 }
