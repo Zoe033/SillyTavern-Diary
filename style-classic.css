@@ -2986,7 +2986,7 @@ box-shadow:
 /* 页面容器调整 */
 .diary-book-character-list {
   padding: 15px !important;
-  margin: 0 !important;
+  margin: 60px 0 0 0 !important;
   border-width: 2px !important;
   border-radius: 12px !important;
 }
@@ -2999,10 +2999,16 @@ box-shadow:
   border-radius: 8px !important;
 }
 
-.diary-book-diary-list,
+.diary-book-diary-list {
+  padding: 15px !important;
+  margin: 60px 0 0 0 !important;
+  border-width: 2px !important;
+  border-radius: 12px !important;
+}
+
 .diary-book-detail {
   padding: 15px !important;
-  margin: 0 !important;
+  margin: 60px 0 0 0 !important;
   border-width: 2px !important;
   border-radius: 12px !important;
 }
@@ -3112,7 +3118,7 @@ box-shadow:
 
 .diary-book-detail-page {
   padding: 8px !important;
-  margin: 60px 0 0 0 !important;
+  margin: 0 !important;
 }
 
 .diary-book-detail-title {
