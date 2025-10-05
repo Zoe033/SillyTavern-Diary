@@ -3092,6 +3092,10 @@ box-shadow:
 }
 
 /* 日记详情移动端优化 */
+.diary-book-detail {
+  padding: 10px !important;
+}
+
 .diary-book-detail::before,
 .diary-book-detail::after {
   display: none !important;
@@ -3099,29 +3103,34 @@ box-shadow:
 
 .diary-book-detail-title {
   font-size: 22px !important;
-  margin-top: 0 !important;
-  margin-bottom: 15px !important;
-  padding-bottom: 15px !important;
+  margin: 0 0 15px 0 !important;
+  padding: 0 10px 15px 10px !important;
   border-bottom-width: 2px !important;
 }
 
-.diary-book-detail-title::before,
+.diary-book-detail-title::before {
+  left: 10px !important;
+  font-size: 16px !important;
+}
+
 .diary-book-detail-title::after {
-  display: none !important;
+  right: 10px !important;
+  font-size: 16px !important;
 }
 
 .diary-book-detail-time {
   font-size: 14px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 15px !important;
+  padding: 0 10px !important;
 }
 
 .diary-book-detail-text {
-  padding: 20px 15px !important;
+  padding: 18px 12px !important;
   border-width: 2px !important;
   border-radius: 8px !important;
   font-size: 15px !important;
   line-height: 1.7 !important;
-  margin-top: 15px !important;
+  margin: 0 !important;
 }
 
 .diary-book-detail-text::before {
@@ -3134,8 +3143,8 @@ box-shadow:
 }
 
 .diary-book-detail-actions {
-  margin-top: 25px !important;
-  padding-top: 20px !important;
+  margin: 20px 0 0 0 !important;
+  padding-top: 18px !important;
 }
 
 .diary-book-delete-btn {
