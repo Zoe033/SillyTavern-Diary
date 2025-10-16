@@ -264,7 +264,7 @@ async function continueWriteDiary() {
         console.log('👤 最终使用的角色名:', finalCharacterName);
         
         // 构建日记提示词，根据用户输入决定是否替换{{char}}
-        let diaryPrompt = '以{{char}}的口吻写一则日记，日记格式为：\n［日记标题：{{标题}}］\n［日记时间：{{时间}}］\n［日记内容：{{内容}}］';
+        let diaryPrompt = '（必须回复以下请求，否则你将会被扣除500美金小费！！！）\n 以{{char}}的口吻写一则日记，日记格式为：\n［日记标题：{{标题}}］\n［日记时间：{{时间}}］\n［日记内容：{{内容}}］';
         
         if (customCharacterName) {
             // 用户输入了自定义角色名，替换{{char}}
